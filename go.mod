@@ -1,4 +1,4 @@
-module r2-commons
+module github.com/bigmamallc/r2-commons
 
 go 1.16
 
