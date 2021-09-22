@@ -8,8 +8,8 @@ import (
 )
 
 type metrics struct {
-	apiResponses    *CounterVec
-	apiResponseTime *HistogramVec
+	responses    *CounterVec
+	responseTime *HistogramVec
 }
 
 const labelStatus = "status"
@@ -17,12 +17,12 @@ const labelURI = "uri"
 
 func RequestMetricsMW(r *Registry, subsystem string, responseTimeBucketsSec []float64) gin.HandlerFunc {
 	mx := &metrics{
-		apiResponses: NewCounterVec(CounterOpts{Name: "apiResponses", Subsystem: subsystem},
+		responses: NewCounterVec(CounterOpts{Name: "responses", Subsystem: subsystem},
 			[]string{labelURI, labelStatus}),
-		apiResponseTime: NewHistogramVec(HistogramOpts{Name: "apiResponseTime",
+		responseTime: NewHistogramVec(HistogramOpts{Name: "responseTime",
 			Subsystem: subsystem, Buckets: responseTimeBucketsSec}, []string{labelURI, labelStatus}),
 	}
-	r.MustRegister(mx.apiResponses, mx.apiResponseTime)
+	r.MustRegister(mx.responses, mx.responseTime)
 
 	return func(ctx *gin.Context) {
 		start := time.Now()
@@ -33,7 +33,7 @@ func RequestMetricsMW(r *Registry, subsystem string, responseTimeBucketsSec []fl
 		status := strconv.Itoa(ctx.Writer.Status())
 		labels := Labels{labelURI: uri, labelStatus: status}
 
-		mx.apiResponses.With(labels).Inc()
-		mx.apiResponseTime.With(labels).Observe(dur.Seconds())
+		mx.responses.With(labels).Inc()
+		mx.responseTime.With(labels).Observe(dur.Seconds())
 	}
 }
