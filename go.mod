@@ -8,5 +8,6 @@ require (
 	github.com/gin-gonic/gin v1.7.4 // indirect
 	github.com/go-redis/redis/v8 v8.11.3 // indirect
 	github.com/phayes/freeport v0.0.0-20180830031419-95f893ade6f2 // indirect
+	github.com/prometheus/client_golang v1.11.0 // indirect
 	github.com/rs/zerolog v1.25.0 // indirect
 )
