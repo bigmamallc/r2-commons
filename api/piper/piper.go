@@ -36,7 +36,7 @@ func New(log zerolog.Logger, mxReg *prometheus.Registry, mxSubsystem string,
 	return p
 }
 
-func (p *Piper) StartBidiPipe(connA *net.TCPConn, connB *net.TCPConn) {
+func (p *Piper) StartBidiPipe(connA net.Conn, connB net.Conn) {
 	abLog := p.log
 	baLog := p.log
 	if p.log.GetLevel() <= zerolog.DebugLevel {
@@ -48,7 +48,7 @@ func (p *Piper) StartBidiPipe(connA *net.TCPConn, connB *net.TCPConn) {
 	go p.uniPipe(connB, connA, baLog)
 }
 
-func (p *Piper) uniPipe(from *net.TCPConn, to *net.TCPConn, log zerolog.Logger) {
+func (p *Piper) uniPipe(from net.Conn, to net.Conn, log zerolog.Logger) {
 	log.Debug().Msg("entering uniPipe()")
 	defer func() {
 		from.Close()
