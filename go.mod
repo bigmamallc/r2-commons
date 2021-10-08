@@ -3,6 +3,7 @@ module github.com/bigmamallc/r2-commons
 go 1.16
 
 require (
+	github.com/Pallinder/go-randomdata v1.2.0 // indirect
 	github.com/bigmamallc/env v1.3.1 // indirect
 	github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e // indirect
 	github.com/gin-gonic/gin v1.7.4 // indirect
