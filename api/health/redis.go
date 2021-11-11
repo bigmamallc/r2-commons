@@ -10,6 +10,13 @@ type RedisComponent struct {
 	r    *redis.Client
 }
 
+func NewRedisComponent(name string, r *redis.Client) *RedisComponent {
+	return &RedisComponent{
+		name: name,
+		r:    r,
+	}
+}
+
 func (r *RedisComponent) HealthComponentName() string {
 	return r.name
 }
