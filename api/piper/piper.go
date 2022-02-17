@@ -68,22 +68,22 @@ func (p *Piper) uniPipe(from net.Conn, to net.Conn, log zerolog.Logger, byteMetr
 	}()
 
 	if err := from.SetReadDeadline(time.Time{}); err != nil {
-		log.Debug().Err(err).Msg("from.SetReadDeadline() failed")
+		log.Warn().Err(err).Msg("from.SetReadDeadline() failed")
 		return
 	}
 	buf := make([]byte, p.bufferSize)
 	for {
 		readSize, readErr := from.Read(buf)
-		log.Debug().Err(readErr).Int("readSize", readSize).Msg("from.Read()")
+		log.Info().Err(readErr).Int("readSize", readSize).Msg("from.Read()")
 		if readSize > 0 {
 			if err := to.SetWriteDeadline(time.Now().Add(p.writeTimeout)); err != nil {
-				log.Debug().Err(err).Msg("to.SetWriteDeadline() failed")
+				log.Warn().Err(err).Msg("to.SetWriteDeadline() failed")
 				return
 			}
 			writeSize, writeErr := to.Write(buf[:readSize])
-			log.Debug().Err(writeErr).Int("writeSize", writeSize).Msg("to.Write()")
+			log.Info().Err(writeErr).Int("writeSize", writeSize).Msg("to.Write()")
 			if writeErr != nil {
-				log.Debug().Err(writeErr).Msg("to.Write() failed")
+				log.Warn().Err(writeErr).Msg("to.Write() failed")
 				return
 			}
 
