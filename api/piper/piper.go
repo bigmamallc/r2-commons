@@ -39,8 +39,12 @@ func New(log zerolog.Logger, mxReg *prometheus.Registry, mxSubsystem string,
 }
 
 func (p *Piper) StartBidiPipe(connA net.Conn, connB net.Conn) {
-	abLog := p.log
-	baLog := p.log
+	p.StartBidiPipeWithLog(connA, connB, p.log)
+}
+
+func (p *Piper) StartBidiPipeWithLog(connA net.Conn, connB net.Conn, baseLog zerolog.Logger) {
+	abLog := baseLog
+	baLog := baseLog
 	if p.log.GetLevel() <= zerolog.DebugLevel {
 		abLog = abLog.With().Str("dir", "a->b").Logger()
 		baLog = baLog.With().Str("dir", "b->a").Logger()
